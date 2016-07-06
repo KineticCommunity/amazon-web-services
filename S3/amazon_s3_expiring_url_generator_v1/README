@@ -1,0 +1,42 @@
+== amazon_s3_expiring_url_generator
+This handler generate an expiring URL for S3. Expiring URLs take a bucket, a key (path + filename) and an expiration and build up a special URL that will give the user access to the file only for a certain time period.
+
+For more information, see the Detailed Description section below.
+
+=== Parameters
+[bucket]
+Name of the desired bucket.
+
+[region]
+Name of the region of the bucket.
+
+[key]
+Name of the key in desired bucket (path + filename).
+
+[seconds_to_expire]
+Number of seconds in which URL will expire.  This may not exceed 604,800 seconds or one week.
+
+=== Authentication
+This handler requires two info values for AWS authentication: Access Key ID and
+the Secret Access Key. These are analogous to username and password.
+
+To find authentication values from the AWS account:
+
+  1. Navigate to the following URL: https://aws.amazon.com/account/
+  2. Click the "Security Credentials" link (if you are not logged in, you will
+     be prompted to do so).
+  3. Click the "Access Credentials" link.  Here you will find a list of your
+     Access Keys.
+  5. Use the Access Key ID to configure the access_key_id info value of this
+     handler.
+  6. To retrieve the Secret Access Key, click the "Show" link next to the Access
+     Key ID that will be used.
+  7. Use the Secret Access Key to configure the secret_access_key info value of
+     this handler.
+
+=== Results
+[Public Url]
+  URL to desired bucket and key path for file.
+
+=== Detailed Description
+  This handler generates an expiring URL for S3. Expiring URLs take a bucket, a key (path + filename) and an expiration and build up a special URL that will give the user access to the file only for a certain time period.

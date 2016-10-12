@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taskDefinition id="aws_ec2_run_instances" name="AWS EC2 Run Instances" schema_version="1.0" version="1">
+    <author>support@kineticdata.com</author>
+    <description>Launches the specified number of instances using an AMI for which you have permissions.</description>
+    <helpurl></helpurl>
+    <visible>true</visible>
+    <deferrable>false</deferrable>
+    <parameters>
+        <parameter id="dry_run" label="Dry Run" required="true"
+            tooltip="true or false. Dry run validates user permissions. Error response will be 'DryRunOperation' if the account has the proper permissions; 'UnauthorizedOperation' if the account does not have the proper permissions.">false</parameter>
+        <parameter id="image_id" label="Image ID" required="true"
+            tooltip="The ID of the AMI." />
+        <parameter id="min_count" label="Minimum Instance Count" required="true"
+            tooltip="The minimum number of instances to launch. If you specify a minimum that is more instances than Amazon EC2 can launch in the target Availability Zone, Amazon EC2 launches no instances.">1</parameter>
+        <parameter id="max_count" label="Maximum Instance Count" required="true"
+            tooltip="The maximum number of instances to launch. If you specify more instances than Amazon EC2 can launch in the target Availability Zone, Amazon EC2 launches the largest possible number of instances above MinCount.">1</parameter>
+        <parameter id="key_name" label="Key Name" required="false"
+            tooltip="The name of the key pair. Linux instances have access to the public key of the key pair at boot. You can use this key to provide secure access to the instance. Amazon EC2 public images use this feature to provide secure access without passwords. For more information, see Key Pairs in the Amazon Elastic Compute Cloud User Guide." />
+        <parameter id="security_groups" label="Security Groups" required="false"
+            tooltip="One or more security group names, separated by commas. For a nondefault VPC, you must use Security Group IDs instead." />
+        <parameter id="security_group_ids" label="Security Group IDs" required="false"
+            tooltip="One or more security group IDs, separated by commas." />
+        <parameter id="user_data" label="User Data" required="false"
+            tooltip="The Base64-encoded MIME user data for the instances." />
+        <parameter id="instance_type" label="Instance Type" required="false"
+            tooltip="The instance type. For more information, see Instance Types in the Amazon Elastic Compute Cloud User Guide. If not provided the AWS default is m1.small" />
+        <parameter id="placement" label="Placement" required="false"
+            tooltip="The placement for the instance. Format: {&quot;availability_zone&quot;:&quot;some value&quot;,&quot;group_name&quot;:&quot;some value&quot;,&quot;tenancy&quot;:&quot;default|dedicated&quot;}"/>
+        <parameter id="kernel_id" label="Kernel ID" required="false"
+            tooltip="The ID of the kernel. AWS recommends that you use PV-GRUB instead of kernels and RAM disks. For more information, see PV-GRUB in the Amazon Elastic Compute Cloud User Guide." />
+        <parameter id="ramdisk_id" label="Ramdisk ID" required="false"
+            tooltip="The ID of the RAM disk. AWS recommends that you use PV-GRUB instead of kernels and RAM disks. For more information, see PV-GRUB in the Amazon Elastic Compute Cloud User Guide." />
+        <parameter id="block_device_mappings" label="Block Device Mapping" required="false"
+            tooltip="The block device mapping. Format: [{&quot;virtual_name&quot;:&quot;some value&quot;,&quot;device_name&quot;:&quot;some value&quot;,&quot;ebs&quot;:{&quot;snapshot_id&quot;:&quot;some value&quot;,&quot;volume_size&quot;:some integer,&quot;delete_on_termination&quot;:true|false,&quot;volume_type&quot;:&quot;standard|iol|gp2&quot;,&quot;iops&quot;:&quot;some integer&quot;,&quot;encrypted&quot;:true|false},&quot;no_device&quot;:&quot;some value&quot;},...]"/>
+        <parameter id="monitoring" label="Monitoring" required="true"
+            tooltip="true or false. The monitoring for the instance.">false</parameter>
+        <parameter id="subnet_id" label="Subnet ID" required="false"
+            tooltip="The ID of the subnet to launch the instance into."/>
+        <parameter id="disable_api_termination" label="Disable API Termination" required="false"
+            tooltip="true or false. If you set this parameter to true, you can't terminate the instance using the Amazon EC2 console, CLI, or API; otherwise, you can. If you set this parameter to true and then later want to be able to terminate the instance, you must first change the value of the disableApiTermination attribute to false using ModifyInstanceAttribute. Alternatively, if you set InstanceInitiatedShutdownBehavior to terminate, you can terminate the instance by running the shutdown command from the instance.">false</parameter>
+        <parameter id="instance_initiated_shutdown_behavior" label="Instance Initiated Shutdown Behavior" required="false"
+            tooltip="Accepts 'stop' or 'terminate'.  Indicates whether an instance stops or terminates when you initiate shutdown from the instance (using the operating system command for system shutdown). AWS default if not provided: stop"/>
+        <parameter id="private_ip_address" label="Private IP Address" required="false"
+            tooltip="The primary IP address. If not provided, AWS selects an IP address from the IP address range of the subnet. Note: This cannot be used in conjunction with setting a provide ip address as primary in the network interfaces input structure."/>
+        <parameter id="client_token" label="Client Token" required="true"
+            tooltip="Unique, case-sensitive identifier you provide to ensure the idempotency of the request."/>
+        <parameter id="network_interfaces" label="Network Interfaces" required="false"
+            tooltip="One or more network interfaces. Format: [{&quot;network_interface_id&quot;:&quot;some_value&quot;,&quot;device_index&quot;:some_integer,&quot;subnet_id&quot;:&quot;some_value&quot;,&quot;description&quot;:&quot;some_value&quot;,&quot;private_ip_address&quot;:&quot;some_value&quot;,&quot;groups&quot;:[&quot;some value&quot;,&quot;some_other_value&quot;,&quot;yet_some_other_value&quot;],&quot;delete_on_termination&quot;:true | false,&quot;private_ip_addresses&quot;:[{&quot;private_ip_address&quot;:&quot;some_value&quot;,&quot;primary&quot;:true|false}],&quot;secondary_private_ip_address_count&quot;:some_integer,&quot;associate_public_ip_address&quot;:true|false},{another entry}]"/>
+        <parameter id="iam_instance_profile" label="IAM Instance Profile" required="false"
+            tooltip="The IAM instance profile. Format: {&quot;arn&quot;:&quot;some value&quot;,&quot;name&quot;:&quot;some value&quot;}"/>
+        <parameter id="ebs_optimized" label="EBS Optimized" required="false"
+            tooltip="true or false. Indicates whether the instance is optimized for EBS I/O. This optimization provides dedicated throughput to Amazon EBS and an optimized configuration stack to provide optimal EBS I/O performance. This optimization isn't available with all instance types. Additional usage charges apply when using an EBS-optimized instance. If not provided, the AWS default is false."/>
+    </parameters>
+    <handler name="aws_ec2_run_instances" version="1">
+        <infos>
+            <info name="access_key_id">&lt;%= @info['access_key_id'] %&gt;</info>
+            <info name="secret_access_key">&lt;%= @info['secret_access_key'] %&gt;</info>
+            <info name="region">&lt;%= @info['region'] %&gt;</info>
+            <info name="enable_debug_logging">&lt;%= @info['enable_debug_logging'] %&gt;</info>
+        </infos>
+        <parameters>
+            <parameter name='dry_run'>&lt;%= @parameters['dry_run'] %&gt;</parameter>
+            <parameter name='image_id'>&lt;%= @parameters['image_id'] %&gt;</parameter>
+            <parameter name='min_count'>&lt;%= @parameters['min_count'] %&gt;</parameter>
+            <parameter name='max_count'>&lt;%= @parameters['max_count'] %&gt;</parameter>
+            <parameter name='key_name'>&lt;%= @parameters['key_name'] %&gt;</parameter>
+            <parameter name='security_groups'>&lt;%= @parameters['security_groups'] %&gt;</parameter>
+            <parameter name='security_group_ids'>&lt;%= @parameters['security_group_ids'] %&gt;</parameter>
+            <parameter name='user_data'>&lt;%= @parameters['user_data'] %&gt;</parameter>
+            <parameter name='instance_type'>&lt;%= @parameters['instance_type'] %&gt;</parameter>
+            <parameter name='placement'>&lt;%= @parameters['placement'] %&gt;</parameter>
+            <parameter name='kernel_id'>&lt;%= @parameters['kernel_id'] %&gt;</parameter>
+            <parameter name='ramdisk_id'>&lt;%= @parameters['ramdisk_id'] %&gt;</parameter>
+            <parameter name='block_device_mappings'>&lt;%= @parameters['block_device_mappings'] %&gt;</parameter>
+            <parameter name='monitoring'>&lt;%= @parameters['monitoring'] %&gt;</parameter>
+            <parameter name='subnet_id'>&lt;%= @parameters['subnet_id'] %&gt;</parameter>
+            <parameter name='disable_api_termination'>&lt;%= @parameters['disable_api_termination'] %&gt;</parameter>
+            <parameter name='instance_initiated_shutdown_behavior'>&lt;%= @parameters['instance_initiated_shutdown_behavior'] %&gt;</parameter>
+            <parameter name='private_ip_address'>&lt;%= @parameters['private_ip_address'] %&gt;</parameter>
+            <parameter name='client_token'>&lt;%= @parameters['client_token'] %&gt;</parameter>
+            <parameter name='network_interfaces'>&lt;%= @parameters['network_interfaces'] %&gt;</parameter>
+            <parameter name='iam_instance_profile'>&lt;%= @parameters['iam_instance_profile'] %&gt;</parameter>
+            <parameter name='ebs_optimized'>&lt;%= @parameters['ebs_optimized'] %&gt;</parameter>
+
+        </parameters>
+    </handler>
+    <results format="xml">
+        <result name="reservation_id"/>
+        <result name="owner_id"/>
+        <result name="requester_id"/>
+        <result name="groups_xml"/>
+        <result name="groups_string"/>
+        <result name="instances_xml"/>
+        <result name="instances_string"/>
+    </results>
+</taskDefinition>

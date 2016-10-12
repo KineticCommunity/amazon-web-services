@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taskDefinition id="aws_ec2_describe_images" name="AWS EC2 Describe Images" schema_version="1.0" version="1">
+    <author>support@kineticdata.com</author>
+    <description>Describes one or more of the images (AMIs, AKIs, and ARIs) available to you. Images available to you include public images, private images that you own, and private images owned by other AWS accounts but for which you have explicit launch permissions.</description>
+    <helpurl></helpurl>
+    <visible>true</visible>
+    <deferrable>false</deferrable>
+    <parameters>
+        <parameter id="dry_run" label="Dry Run" required="true"
+            tooltip="true or false. Dry run validates user permissions. Error response will be 'DryRunOperation' if the account has the proper permissions; 'UnauthorizedOperation' if the account does not have the proper permissions.">false</parameter>
+        <parameter id="image_ids" label="Image IDs" required="false"
+            tooltip="A list of one or more image IDs separated by commans" />
+        <parameter id="owners" label="Owners" required="false"
+            tooltip="Specify an AWS account ID, 'amazon' (owner is Amazon), 'aws-marketplace' (owner is AWS Marketplace), 'self' (owner is the sender of the request). Omitting this option returns all images for which you have launch permissions, regardless of ownership. Separate multiple values with a comma."/>
+        <parameter id="executable_users" label="Executable Users" required="false"
+            tooltip="Limits the images by users with explicit launch permissions. Specify an AWS account ID, 'self' (the send of the request), or 'all' (public AMIs). Separate multiple values with a comma."/>
+        <parameter id="filters" label="Filters" required="false"
+            tooltip="One or more filters in this format {&quot;filter key name 1&quot;:[&quot;filter values 1&quot;,&quot;filter values 2&quot;,...],&quot;filter key name 2&quot;:[&quot;filter values 3&quot;,&quot;filter values 4&quot;,...]}. See AWS documentation for the extensive list of filter key values."/>
+    </parameters>
+    <handler name="aws_ec2_describe_images" version="1">
+        <infos>
+            <info name="access_key_id">&lt;%= @info['access_key_id'] %&gt;</info>
+            <info name="secret_access_key">&lt;%= @info['secret_access_key'] %&gt;</info>
+            <info name="region">&lt;%= @info['region'] %&gt;</info>
+            <info name="enable_debug_logging">&lt;%= @info['enable_debug_logging'] %&gt;</info>
+        </infos>
+        <parameters>
+            <parameter name='dry_run'>&lt;%= @parameters['dry_run'] %&gt;</parameter>
+            <parameter name='image_ids'>&lt;%= @parameters['image_ids'] %&gt;</parameter>
+            <parameter name='owners'>&lt;%= @parameters['owners'] %&gt;</parameter>
+            <parameter name='executable_users'>&lt;%= @parameters['executable_users'] %&gt;</parameter>
+            <parameter name='filters'>&lt;%= @parameters['filters'] %&gt;</parameter>
+        </parameters>
+    </handler>
+    <results format="xml">
+        <result name="images_info_string"/>
+        <result name="images_images_id_string"/>
+    </results>
+</taskDefinition>

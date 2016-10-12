@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taskDefinition id="aws_ec2_create_vpc" name="AWS EC2 Create VPC" schema_version="1.0" version="1">
+    <author>support@kineticdata.com</author>
+    <description>Creates a VPC</description>
+    <helpurl></helpurl>
+    <visible>true</visible>
+    <deferrable>false</deferrable>
+    <parameters>
+        <parameter id="dry_run" label="Dry Run" required="true"
+            tooltip="true or false. Dry run validates user permissions. Error response will be 'DryRunOperation' if the account has the proper permissions; 'UnauthorizedOperation' if the account does not have the proper permissions.">false</parameter>
+        <parameter id="cidr_block" label="CIDR Block" required="true"
+            tooltip="The network range for the VPC, in CIDR notation.  For example: 10.0.0.0/16" />
+        <parameter id="instance_tenancy" label="Instance Tenancy" required="true"
+            tooltip="The supported tenancy options for instances launched into the VPC. A value of 'default' means that instances can be
+            launched with any tenancy; a value of 'dedicated' means all isntances launched into the VPC are launched as dedicated tenancy instances
+            regardless of the tenancy assigned to the instance at launch. Dedicated tenancy instances run on single-tenant hardware.">default</parameter>
+    </parameters>
+    <handler name="aws_ec2_create_vpc" version="1">
+        <infos>
+            <info name="access_key_id">&lt;%= @info['access_key_id'] %&gt;</info>
+            <info name="secret_access_key">&lt;%= @info['secret_access_key'] %&gt;</info>
+            <info name="region">&lt;%= @info['region'] %&gt;</info>
+            <info name="enable_debug_logging">&lt;%= @info['enable_debug_logging'] %&gt;</info>
+        </infos>
+        <parameters>
+            <parameter name='dry_run'>&lt;%= @parameters['dry_run'] %&gt;</parameter>
+            <parameter name='cidr_block'>&lt;%= @parameters['cidr_block'] %&gt;</parameter>
+            <parameter name='instance_tenancy'>&lt;%= @parameters['instance_tenancy'] %&gt;</parameter>
+        </parameters>
+    </handler>
+    <results format="xml">
+        <result name="vpc_id"/>
+        <result name="vpc_state"/>
+        <result name="vpc_cidr_block"/>
+        <result name="vpc_dhcp_options_id"/>
+        <result name="vpc_tags"/>
+        <result name="vpc_instance_tenancy"/>
+        <result name="vpc_is_default"/>
+    </results>
+</taskDefinition>

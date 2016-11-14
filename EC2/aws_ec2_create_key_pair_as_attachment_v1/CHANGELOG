@@ -1,0 +1,2 @@
+aws_ec2_create_key_pair_as_attachment_v1 (2016-11-08)
+* Initial version.  See README for details.

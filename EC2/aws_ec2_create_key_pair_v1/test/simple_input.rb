@@ -1,14 +1,14 @@
 {
   'info' =>
   {
-    'access_key_id' => 'AKIAJS2NIXR5A6JAJOFQ',
-    'secret_access_key' => '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',
-    'region' => 'us-west-2',
+    'access_key_id' => 'AKIAJUM63WQS7UHG4JFQ',
+    'secret_access_key' => '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',
+    'region' => 'us-east-2',
     'enable_debug_logging' => 'Yes'
   },
   'parameters' =>
   {
-    'dry_run' => 'true',
-    'key_name' => 'Owner'
+    'dry_run' => 'false',
+    'key_name' => 'JAMESTESTKEY'
   }
 }
